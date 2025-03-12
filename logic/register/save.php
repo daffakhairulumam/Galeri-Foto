@@ -25,7 +25,7 @@ if ($cek > 0) {
     ?>
         <script type="text/javascript">
             alert('Data berhasil Disimpan, Silahkan Masuk!');
-            window.location = '../../pages/auth/login.php';
+            window.location = '../../pages/dashboard/main-page.php';
         </script>
 <?php
     } else {

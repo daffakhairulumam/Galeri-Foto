@@ -16,6 +16,6 @@ if (isset($_SESSION['login'])) {
 
   include 'pages/layouts/footer.php';
 } else {
-  echo '<script>window.location="pages/auth/login.php";</script>';
+  echo '<script>window.location="pages/dashboard/main.php";</script>';
   exit;
 }

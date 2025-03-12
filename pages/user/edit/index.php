@@ -3,7 +3,7 @@
 include_once('./config/koneksi.php');
 
 $id = $_GET['id'];
-$query = "SELECT * FROM up_foto WHERE id = '$id'";
+$query = "SELECT * FROM registrasi WHERE id_user = '$id'";
 $result = mysqli_query($conn, $query);
 $data = mysqli_fetch_array($result);
 ?>
@@ -13,7 +13,7 @@ $data = mysqli_fetch_array($result);
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                <li class="breadcrumb-item"><a href="index.php?page=up-foto">Edit Foto</a></li>
+                <li class="breadcrumb-item"><a href="index.php?page=user">Edit Foto</a></li>
                 <li class="breadcrumb-item active">Edit Foto</li>
             </ol>
         </nav>
@@ -26,30 +26,25 @@ $data = mysqli_fetch_array($result);
                     <div class="card-body">
                         <h5 class="card-title">Edit Foto</h5>
 
-                        <form action="logic/foto/update.php" method="post" class="" enctype="multipart/form-data">
+                        <form action="logic/user/update.php" method="post">
 
                             <div class="form-group mb-3">
-                                <input type="hidden" name="id" placeholder="Input ID" class="form-control" value="<?= $data['id'] ?>">
+                                <input type="hidden" name="id" placeholder="Input ID" class="form-control" value="<?= $data['id_user'] ?>">
                             </div>
 
                             <div class="form-group mb-3">
-                                <label>Username</label>
-                                <input type="text" name="username" placeholder="Input Username" class="form-control" value="<?= $data['username'] ?>">
+                                <label>Nama</label>
+                                <input type="text" name="nama" placeholder="Input Nama" class="form-control" value="<?= $data['name'] ?>">
                             </div>
 
                             <div class="form-group mb-3">
-                                <label>Name</label>
-                                <input type="text" name="nama" placeholder="Input Nama" class="form-control" value="<?= $data['nama'] ?>">
+                                <label>Email</label>
+                                <input type="email" name="email" placeholder="Input Email" class="form-control" value="<?= $data['email'] ?>">
                             </div>
 
                             <div class="form-group mb-3">
-                                <label>Deskripsi</label>
-                                <textarea name="deskripsi" placeholder="Input Deskripsi" class="form-control"><?= $data['deskripsi'] ?></textarea>
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label>Gambar</label>
-                                <input type="file" name="image" class="form-control" value="<?= ['images'] ?>">
+                                <label>Password</label>
+                                <input type="password" name="password" placeholder="Input Password" class="form-control" value="<?= $data['password'] ?>">
                             </div>
 
                             <hr>

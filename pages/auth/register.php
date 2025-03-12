@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Login - Galeri Foto</title>
+    <title>Registrasi - Galeri Foto</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -70,7 +70,7 @@
                                             <input type="hidden" name="id" id="">
                                             <label for="yourUsername" class="form-label">Nama</label>
                                             <div class="input-group has-validation">
-                                                <input type="nama" name="nama" class="form-control" id="yourUsername" required>
+                                                <input type="text" name="nama" class="form-control" id="yourUsername" required>
                                             </div>
                                         </div>
 
@@ -85,7 +85,7 @@
                                         </div>
 
                                         <div class="col-12">
-                                            <button class="btn btn-primary w-100" type="submit" name="submit">Login</button>
+                                            <button class="btn btn-primary w-100" type="submit" name="submit">Registrasi</button>
                                         </div>
                                     </form>
                                 </div>

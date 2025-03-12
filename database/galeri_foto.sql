@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 06, 2025 at 03:57 AM
+-- Generation Time: Mar 11, 2025 at 08:11 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -41,7 +41,8 @@ CREATE TABLE `registrasi` (
 INSERT INTO `registrasi` (`id_user`, `name`, `email`, `password`) VALUES
 (62, 'executive', 'executive@gmail.com', '3250d1e21c4281d3cd9479f5685770b6'),
 (63, 'Evos Glory', 'evos@gmail.com', 'f64d9f8a9d23ccde66c0735669ae2c00'),
-(65, 'GOAT', 'GOAT@gmail.com', 'a94aa000f9a94cc51775bd5eac97c926');
+(65, 'GOAT', 'GOAT@gmail.com', 'a94aa000f9a94cc51775bd5eac97c926'),
+(68, 'tes', 'tes@gmail.com', '28b662d883b6d76fd96e4ddc5e9ba780');
 
 -- --------------------------------------------------------
 
@@ -64,9 +65,22 @@ CREATE TABLE `up_foto` (
 --
 
 INSERT INTO `up_foto` (`id`, `id_user`, `username`, `nama`, `deskripsi`, `jumlah_likes`, `images`) VALUES
-(58, 62, 'executive', 'executive', '15 UCL', 7, '2047766049_madrid.jpg'),
+(58, 62, 'executive', 'executive', '15 UCL', 12, '2047766049_madrid.jpg'),
 (59, 63, 'Evos Glory', 'Evos Glory', 'M1', 3, '1632897520_evos.jpg'),
 (60, 65, 'GOAT', 'GOAT', 'GOAT', 5, '1741638308_cr.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_likes`
+--
+
+CREATE TABLE `user_likes` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `photo_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indexes for dumped tables
@@ -86,6 +100,13 @@ ALTER TABLE `up_foto`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `user_likes`
+--
+ALTER TABLE `user_likes`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_photo_unique` (`user_id`,`photo_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -93,13 +114,19 @@ ALTER TABLE `up_foto`
 -- AUTO_INCREMENT for table `registrasi`
 --
 ALTER TABLE `registrasi`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `up_foto`
 --
 ALTER TABLE `up_foto`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+
+--
+-- AUTO_INCREMENT for table `user_likes`
+--
+ALTER TABLE `user_likes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

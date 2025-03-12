@@ -3,4 +3,4 @@
 session_start();
 session_destroy();
 
-header("location: ../../pages/auth/login.php");
+header("location: ../../pages/dashboard/main-page.php");

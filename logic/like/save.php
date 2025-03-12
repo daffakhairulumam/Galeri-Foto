@@ -1,35 +1,48 @@
 <?php
+// Place this code in logic/like/save.php
+
 include('../../config/koneksi.php');
 
-// Ambil data dari URL
-$id_foto = isset($_GET['id']) ? $_GET['id'] : null;
-
-// Validasi input
-$id_foto = mysqli_real_escape_string($conn, $id_foto);
-
-if ($id_foto) {
-    // Query untuk mendapatkan jumlah like saat ini
-    $query = "SELECT jumlah_likes FROM up_foto WHERE id = '$id_foto'";
-    $result = mysqli_query($conn, $query);
-
-    if ($result && mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
-        $current_likes = $row['jumlah_likes'];
-
-        // Update jumlah like
-        $new_likes = $current_likes + 1;
-        $update_query = "UPDATE up_foto SET jumlah_likes = $new_likes WHERE id = '$id_foto'";
-
-        if (mysqli_query($conn, $update_query)) {
-            header("Location: ../../index.php?page=dashboard");
-        } else {
-            echo "Error: " . mysqli_error($conn);
-        }
-    } else {
-        echo "Foto tidak ditemukan.";
-    }
-} else {
-    echo "ID foto tidak ditemukan.";
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 
-mysqli_close($conn);
+// Check if user is logged in
+if (!isset($_SESSION['id_user'])) {
+    header("Location: ../../login.php");
+    exit;
+}
+
+$user_id = $_SESSION['id_user'];
+$photo_id = $_GET['id'] ?? 0;
+
+if (!$photo_id) {
+    header("Location: ../../index.php");
+    exit;
+}
+
+// Check if user has already liked this photo
+$check_like = mysqli_query($conn, "SELECT * FROM user_likes WHERE user_id = '$user_id' AND photo_id = '$photo_id'");
+
+if (mysqli_num_rows($check_like) > 0) {
+    // User already liked this photo, so unlike it
+    mysqli_query($conn, "DELETE FROM user_likes WHERE user_id = '$user_id' AND photo_id = '$photo_id'");
+
+    // Update the like count in the photos table
+    mysqli_query($conn, "UPDATE up_foto SET jumlah_likes = jumlah_likes - 1 WHERE id = '$photo_id'");
+
+    // Redirect back
+    header("Location: ../../index.php");
+    exit;
+} else {
+    // User hasn't liked this photo yet, so add the like
+    mysqli_query($conn, "INSERT INTO user_likes (user_id, photo_id) VALUES ('$user_id', '$photo_id')");
+
+    // Update the like count in the photos table
+    mysqli_query($conn, "UPDATE up_foto SET jumlah_likes = jumlah_likes + 1 WHERE id = '$photo_id'");
+
+    // Redirect back
+    header("Location: ../../index.php");
+    exit;
+}
