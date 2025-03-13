@@ -18,7 +18,7 @@ function getFoto($id = null, $search = null)
 
         // Tambahkan kondisi pencarian jika parameter search ada
         if ($search) {
-            $query = "SELECT * FROM up_foto WHERE nama LIKE '%$search%'";
+            $query = "SELECT * FROM up_foto WHERE nama LIKE '%$search%' OR deskripsi LIKE '%$search%'";
         }
     }
 
@@ -335,58 +335,61 @@ $countFoto = getFoto(null, $search_term);
         <section class="section dashboard">
             <div class="container mt-5 pt-5">
                 <div class="row welcome-banner">
-                    <div class="col-md-6 mx-auto text-center">
-                        <img src="../../assets/img/galeri-foto.png" alt="" width="150px" class="mb-3">
-                        <h2>Selamat Datang di Galeri Foto</h2>
-                        <p>Lihat koleksi foto menarik dari pengguna kami</p>
-                    </div>
-                </div>
+                    <!-- Welcome Banner - Only show when not searching -->
+                    <?php if (!$search_term) { ?>
+                        <div class="row welcome-banner">
+                            <div class="col-md-6 mx-auto text-center">
+                                <img src="../../assets/img/galeri-foto.png" alt="" width="150px" class="mb-3">
+                                <h2>Selamat Datang di Galeri Foto</h2>
+                                <p>Lihat koleksi foto menarik dari pengguna kami</p>
+                            </div>
+                        </div>
+                    <?php } ?>
 
-                <!-- Search Results Info -->
-                <?php if ($search_term) { ?>
-                    <div class="alert alert-info">
-                        <span>Hasil pencarian tidak ada</span>
-                        <!-- <a href="?" class="float-end">Tampilkan semua</a> -->
-                    </div>
-                <?php } ?>
+                    <!-- Search Results Info - Only show when searching AND no results found -->
+                    <?php if ($search_term && mysqli_num_rows($countFoto) == 0) { ?>
+                        <div class="alert alert-info text-center" style="background-color: #d9f2f7; color: #0a6680; border: none; width: 100%; padding: 15px; margin-top: 20px; margin-bottom: 20px; border-radius: 6px;">
+                            Hasil pencarian tidak ada
+                        </div>
+                    <?php } ?>
 
-                <!-- Gallery Container -->
-                <div class="gallery-container">
-                    <?php
-                    // Display search results or all photos
-                    if (mysqli_num_rows($countFoto) > 0) {
-                        while ($photo = mysqli_fetch_assoc($countFoto)) {
-                    ?>
-                            <div class="photo-container">
-                                <div class="card">
-                                    <img src="../../public/img/product/<?= $photo['images'] ?>" class="card-img-top" alt="<?= $photo['nama'] ?>">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><?= $photo['nama'] ?></h5>
-                                        <p class="card-text"><?= $photo['deskripsi'] ?></p>
-                                        <p class="card-text"><small class="text-muted">By: <?= $photo['username'] ?></small></p>
+                    <!-- Gallery Container -->
+                    <div class="gallery-container">
+                        <?php
+                        // Display search results or all photos
+                        if (mysqli_num_rows($countFoto) > 0) {
+                            while ($photo = mysqli_fetch_assoc($countFoto)) {
+                        ?>
+                                <div class="photo-container">
+                                    <div class="card">
+                                        <img src="../../public/img/product/<?= $photo['images'] ?>" class="card-img-top" alt="<?= $photo['nama'] ?>">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><?= $photo['nama'] ?></h5>
+                                            <p class="card-text"><?= $photo['deskripsi'] ?></p>
+                                            <p class="card-text"><small class="text-muted">By: <?= $photo['username'] ?></small></p>
 
-                                        <div class="d-flex align-items-center">
-                                            <?php if (isset($_SESSION['id_user'])) { ?>
-                                                <button class="btn btn-sm like-button">
-                                                    <i class="bi bi-heart-fill text-danger"></i>
-                                                    <span class="like-count"><?= $photo['jumlah_likes'] ?></span> likes
-                                                </button>
-                                            <?php } else { ?>
-                                                <span class="like-button disabled" data-bs-toggle="tooltip" title="Login untuk menyukai foto">
-                                                    <i class="bi bi-heart-fill text-danger"></i>
-                                                    <span class="like-count"><?= $photo['jumlah_likes'] ?></span> likes
-                                                    <!-- <span class="like-tooltip">Login untuk menyukai foto</span> -->
-                                                </span>
-                                            <?php } ?>
+                                            <div class="d-flex align-items-center">
+                                                <?php if (isset($_SESSION['id_user'])) { ?>
+                                                    <button class="btn btn-sm like-button">
+                                                        <i class="bi bi-heart-fill text-danger"></i>
+                                                        <span class="like-count"><?= $photo['jumlah_likes'] ?></span> likes
+                                                    </button>
+                                                <?php } else { ?>
+                                                    <span class="like-button disabled" data-bs-toggle="tooltip" title="Login untuk menyukai foto">
+                                                        <i class="bi bi-heart-fill text-danger"></i>
+                                                        <span class="like-count"><?= $photo['jumlah_likes'] ?></span> likes
+                                                        <!-- <span class="like-tooltip">Login untuk menyukai foto</span> -->
+                                                    </span>
+                                                <?php } ?>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        <?php
-                        }
-                    } else {
-                        ?>
-                        <!-- <div class="col-12 d-flex justify-content-center align-items-center center-alert">
+                            <?php
+                            }
+                        } else {
+                            ?>
+                            <!-- <div class="col-12 d-flex justify-content-center align-items-center center-alert">
                             <div class="alert alert-info">
                                 <?php if ($search_term) { ?>
                                     Tidak ada foto yang ditemukan dengan kata kunci "<?= ($search_term) ?>"
@@ -395,11 +398,11 @@ $countFoto = getFoto(null, $search_term);
                                 <?php } ?>
                             </div>
                         </div> -->
-                    <?php
-                    }
-                    ?>
+                        <?php
+                        }
+                        ?>
+                    </div>
                 </div>
-            </div>
         </section>
     </main><!-- End #main -->
 
